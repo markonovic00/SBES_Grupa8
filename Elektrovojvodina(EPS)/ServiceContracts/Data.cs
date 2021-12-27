@@ -22,6 +22,11 @@ namespace ServiceContracts
         [DataMember]
         public List<Double> MesecnaPotrosnja { get; set; }
 
+        public Data()
+        {
+
+        }
+
         public static Data DataFromString(string dataString)
         {
             Data newDt = new Data();
@@ -51,6 +56,17 @@ namespace ServiceContracts
             mp=mp.Remove(mp.Length - 1);
             mp += "]";
             return ID + ";" + Region + ";" + Grad + ";" + Godina + ";" + mp;
+        }
+
+        public bool Same(Data newData)
+        {
+            bool ret = false;
+            if (Region == newData.Region && Grad == newData.Grad && Godina == newData.Godina) //Dodati proveru za mesecnu potrosnju
+                ret = true;
+            else
+                ret = false;
+
+            return ret;
         }
     }
 }

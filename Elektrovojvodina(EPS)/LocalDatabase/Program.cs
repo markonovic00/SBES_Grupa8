@@ -9,11 +9,13 @@ using System.Security.Principal;
 using System.Net.NetworkInformation;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 
 namespace LocalDatabase
 {
     class Program
     {
+        
         static bool IsBusy(int port)
         {
             IPGlobalProperties ipGP = IPGlobalProperties.GetIPGlobalProperties();
@@ -65,6 +67,26 @@ namespace LocalDatabase
             Console.WriteLine("Korisnik koji je pokrenuo servera :" + WindowsIdentity.GetCurrent().Name);
 
             Console.WriteLine("Servis je pokrenut.");
+
+            #region centralConnection
+
+            NetTcpBinding centralBinding = new NetTcpBinding();
+            string centralAddress = "net.tcp://localhost:9999/CentralService";
+
+            centralBinding.Security.Mode = SecurityMode.Transport;
+            centralBinding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
+            centralBinding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+
+            Console.WriteLine("Korisnik koji je pokrenuo klijenta je : " + WindowsIdentity.GetCurrent().Name);
+
+            EndpointAddress endpointAddress = new EndpointAddress(new Uri(centralAddress),
+                EndpointIdentity.CreateUpnIdentity("centralServer"));
+
+            //ClientProxy proxy = new ClientProxy(centralBinding, endpointAddress);
+
+            ClientProxy.proxy = new ClientProxy(centralBinding, endpointAddress);
+
+            #endregion
 
             Console.ReadLine();
         }

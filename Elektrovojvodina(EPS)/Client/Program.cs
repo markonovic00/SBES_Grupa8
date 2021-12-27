@@ -55,7 +55,7 @@ namespace Client
             Console.WriteLine("Korisnik koji je pokrenuo klijenta je : " + WindowsIdentity.GetCurrent().Name);
 
             EndpointAddress endpointAddress = new EndpointAddress(new Uri(address),
-                EndpointIdentity.CreateUpnIdentity("wcfServer"));
+                EndpointIdentity.CreateUpnIdentity("localServer"));
 
             using (ClientProxy proxy = new ClientProxy(binding, endpointAddress))
             {

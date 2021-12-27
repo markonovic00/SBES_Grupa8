@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data.cs" />
+    <Compile Include="ICentral.cs" />
     <Compile Include="ILocal.cs" />
     <Compile Include="LocalSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
