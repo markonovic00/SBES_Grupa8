@@ -123,5 +123,28 @@ namespace CentralDatabase
 
             return updatedRecords;
         }
+
+        public int updateConsumpion(string region, string city, double value)
+        {
+            int retId = 0;
+            int currentMounth = DateTime.Now.Month;
+            List<Data> data = readFromDB(); //Pokupimo sve stare podatke
+
+            if (data.Count == 0 || data == null)
+                data = new List<Data>();
+
+            foreach (Data item in data)
+            {
+                if (item.Grad.ToLower().Equals(city.ToLower()) && item.Godina.Equals(DateTime.Now.Year.ToString()) && item.Region.Equals(region))
+                {
+                    item.MesecnaPotrosnja[currentMounth - 1] = value;
+                    retId = item.ID;
+                }
+            }
+
+            writeToDB(data);
+
+            return retId;
+        }
     }
 }

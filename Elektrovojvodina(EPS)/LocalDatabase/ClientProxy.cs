@@ -63,5 +63,18 @@ namespace LocalDatabase
                 return -1;
             }
         }
+
+        public int updateConsumpion(string region, string city, double value)
+        {
+            try
+            {
+                return factory.updateConsumpion(region, city, value);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: {0}", e.Message);
+                return -1;
+            }
+        }
     }
 }

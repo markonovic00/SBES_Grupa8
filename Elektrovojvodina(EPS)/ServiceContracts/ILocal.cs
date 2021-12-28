@@ -17,6 +17,18 @@ namespace ServiceContracts
         List<Data> getData(string region);
 
         [OperationContract]
+        List<Data> getDataByCity(string region, string city);
+
+        [OperationContract]
+        double getAverageByCity(string region, string city, string godina);
+
+        [OperationContract]
+        double getAverageByRegion(string region, string godina);
+
+        [OperationContract]
+        Data updateConsumption(string region, string city, double value);
+
+        [OperationContract]
         string writeData(Data data, string region);
     }
 }

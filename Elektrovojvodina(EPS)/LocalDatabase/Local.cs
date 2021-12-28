@@ -40,6 +40,23 @@ namespace LocalDatabase
             return retData;
         }
 
+        public void updateDB(List<Data> data, string region)
+        {
+            try
+            {
+                StreamWriter sw = new StreamWriter(region+".txt"); //Suvoparno upisivanje podataka
+                foreach (Data item in data)
+                {
+                    sw.WriteLine(item.ToString());
+                }
+                sw.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
         public List<Data> getData(string region)
         {
             List<Data> list = readFromDB(region);
@@ -90,6 +107,96 @@ namespace LocalDatabase
                 return ex.Message.ToString();
             }
 
+        }
+
+        public List<Data> getDataByCity(string region, string city)
+        {
+            List<Data> list = readFromDB(region);
+            List<Data> filter = new List<Data>();
+            if (list != null)
+            {
+                foreach (Data item in list)
+                {
+                    if (item.Grad.ToLower().Equals(city))
+                        filter.Add(item);
+                }
+            }
+
+            Console.WriteLine("Client request data");
+            return filter;
+        }
+
+        public double getAverageByCity(string region,string city, string godina)
+        {
+            List<Data> data = readFromDB(region);
+            if (data == null)
+                data = new List<Data>();
+
+            double average = 0;
+            int counter = 0;
+
+            foreach (Data item in data)
+            {
+                if (item.Grad.ToLower().Equals(city) && item.Godina.Equals(godina))
+                {
+                    average = item.MesecnaPotrosnja.Sum();
+                    counter = item.MesecnaPotrosnja.Count;
+                }
+            }
+            average = average / counter;
+
+            return average;
+        }
+
+        public double getAverageByRegion(string region, string godina)
+        {
+            List<Data> data = readFromDB(region);
+            if (data == null)
+                data = new List<Data>();
+
+            double average = 0;
+            int counter = 0;
+
+            foreach (Data item in data)
+            {
+                if (item.Region.ToLower().Equals(region) && item.Godina.Equals(godina))
+                {
+                    average += item.MesecnaPotrosnja.Sum();
+                    counter += item.MesecnaPotrosnja.Count;
+                }
+            }
+            average = average / counter;
+
+            return average;
+        }
+
+        public Data updateConsumption(string region, string city, double value)
+        {
+            Data i = new Data() {ID=0,Grad="",Region="",Godina="",MesecnaPotrosnja=new List<double>() { 0 } };
+            int currentMounth = DateTime.Now.Month;
+
+            List<Data> data = readFromDB(region);
+            if (data == null)
+                data = new List<Data>();
+
+            bool need = false;
+            foreach (Data item in data)
+            {
+                if (item.Grad.ToLower().Equals(city.ToLower()) && item.Godina.Equals(DateTime.Now.Year.ToString()))
+                {  
+                    item.MesecnaPotrosnja[currentMounth - 1] = value;
+                    i = item;
+                    need = true;
+                }
+            }
+
+            if (need)
+            {
+                updateDB(data, region); // Need to update it in the central DB
+                ClientProxy.proxy.updateConsumpion(region, city, value); // Update Central DB
+            }
+
+            return i;
         }
     }
 }

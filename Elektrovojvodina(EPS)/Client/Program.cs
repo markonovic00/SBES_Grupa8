@@ -63,7 +63,11 @@ namespace Client
                 while (true)
                 {
                     Console.WriteLine("1. Get Data");
-                    Console.WriteLine("2. Add Data");
+                    Console.WriteLine("2. Get Data by city");
+                    Console.WriteLine("3. Get Year Average by city");
+                    Console.WriteLine("4. Get Year Average by region");
+                    Console.WriteLine("5. Update consumption this mounth");
+                    Console.WriteLine("6. Add Data");
                     Console.WriteLine("0. Exit");
                     code = Console.ReadLine();
                     switch (code)
@@ -86,6 +90,76 @@ namespace Client
                             }
                             break;
                         case "2":
+                            Console.Write("\t Unesite grad:");
+                            string grad = Console.ReadLine();
+                            if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
+                            {
+                                List<Data> data = proxy.getDataByCity(item.Value,grad.ToLower().Trim());
+                                foreach (Data dt in data)
+                                {
+                                    Console.WriteLine(dt.ToString());
+                                }
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                Console.ReadKey();
+                                Environment.Exit(0);
+                            }
+                            break;
+                        case "3":
+                            Console.Write("\t Unesite grad:");
+                            string avg = Console.ReadLine();
+                            Console.Write("\t Unesite godinu:");
+                            string godinac = Console.ReadLine();
+                            if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
+                            {
+                                double data = proxy.getAverageByCity(item.Value,avg.ToLower().Trim(),godinac.ToLower().Trim());
+                                Console.WriteLine("Potrosnja godine: {0} \n Grad: {1} \n Potrosnja: {2}",godinac,avg,data);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                Console.ReadKey();
+                                Environment.Exit(0);
+                            }
+                            break;
+                        case "4":
+                            Console.Write("\t Unesite region:");
+                            string avr = Console.ReadLine();
+                            Console.Write("\t Unesite godinu:");
+                            string godinar = Console.ReadLine();
+                            if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
+                            {
+                                double data = proxy.getAverageByRegion(avr.ToLower().Trim(), godinar.ToLower().Trim());
+                                Console.WriteLine("Potrosnja godine: {0} \n Grad: {1} \n Potrosnja: {2}", godinar, avr, data);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                Console.ReadKey();
+                                Environment.Exit(0);
+                            }
+                            break;
+                        case "5":
+                            Console.Write("\t Unesite grad:");
+                            string gradu = Console.ReadLine();
+                            Console.Write("\t Unesite potrosnju:");
+                            double potrosnja = Convert.ToDouble(Console.ReadLine());
+                            if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
+                            {
+                                Data data = proxy.updateConsumption(item.Value, gradu, potrosnja);
+                                Console.WriteLine("Azurirana vrednost: {0}",data.ToString());
+                            }
+                            else
+                            {
+                                Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                Console.ReadKey();
+                                Environment.Exit(0);
+                            }
+                            break;
+                        case "6":
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
                                 Data dt = new Data

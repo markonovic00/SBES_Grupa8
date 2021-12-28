@@ -18,5 +18,9 @@ namespace ServiceContracts
 
         [OperationContract]
         int writeCentral(Data localData);
+
+        [OperationContract]
+        int updateConsumpion(string region, string city, double value);
+
     }
 }
