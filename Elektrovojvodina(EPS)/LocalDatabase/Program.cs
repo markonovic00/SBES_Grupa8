@@ -86,6 +86,8 @@ namespace LocalDatabase
 
             ClientProxy.proxy = new ClientProxy(centralBinding, endpointAddress);
 
+            Console.WriteLine("Uspedno azurirano {0} vrednosti.",ClientProxy.proxy.updateRecords(Local.readFromDB(item.Value))); //Povuce podatke iz lokalnog txt i posalje centralnoj da proveri sinhronizaciju
+
             #endregion
 
             Console.ReadLine();

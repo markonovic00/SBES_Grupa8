@@ -23,6 +23,19 @@ namespace Client
             //Credentials.Windows.AllowNtlm = false;
         }
 
+        public int deleteData(Data data, string region)
+        {
+            try
+            {
+                return factory.deleteData(data, region);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: {0}", e.Message);
+                return -1;
+            }
+        }
+
         public double getAverageByCity(string region, string city, string godina)
         {
             try

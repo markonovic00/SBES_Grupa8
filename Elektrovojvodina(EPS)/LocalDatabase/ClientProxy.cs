@@ -76,5 +76,31 @@ namespace LocalDatabase
                 return -1;
             }
         }
+
+        public int deleteData(Data _data)
+        {
+            try
+            {
+                return factory.deleteData(_data);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: {0}", e.Message);
+                return -1;
+            }
+        }
+
+        public int updateRecords(List<Data> _data)
+        {
+            try
+            {
+                return factory.updateRecords(_data);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: {0}", e.Message);
+                return -1;
+            }
+        }
     }
 }

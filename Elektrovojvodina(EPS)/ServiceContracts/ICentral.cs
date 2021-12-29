@@ -22,5 +22,11 @@ namespace ServiceContracts
         [OperationContract]
         int updateConsumpion(string region, string city, double value);
 
+        [OperationContract]
+        int deleteData(Data _data);
+
+        [OperationContract]
+        int updateRecords(List<Data> _data);
+
     }
 }

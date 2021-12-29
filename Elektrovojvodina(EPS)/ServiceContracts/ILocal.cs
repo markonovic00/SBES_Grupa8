@@ -30,5 +30,8 @@ namespace ServiceContracts
 
         [OperationContract]
         string writeData(Data data, string region);
+
+        [OperationContract]
+        int deleteData(Data data, string region);
     }
 }

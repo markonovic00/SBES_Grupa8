@@ -15,7 +15,7 @@ namespace LocalDatabase
     {
         public static List<Data> localData = new List<Data>();
 
-        public List<Data> readFromDB(string region)
+        public static List<Data> readFromDB(string region)
         {
             List<Data> retData = new List<Data>();
             if (File.Exists(region + ".txt"))
@@ -27,7 +27,8 @@ namespace LocalDatabase
                         string line;
                         while ((line = reader.ReadLine()) != null)
                         {
-                            retData.Add(Data.DataFromString(line)); // Add to list.
+                            if (!string.IsNullOrWhiteSpace(line))
+                                retData.Add(Data.DataFromString(line)); // Add to list.
                         }
                     }
                 }
@@ -195,6 +196,36 @@ namespace LocalDatabase
                 updateDB(data, region); // Need to update it in the central DB
                 ClientProxy.proxy.updateConsumpion(region, city, value); // Update Central DB
             }
+
+            return i;
+        }
+
+        public int deleteData(Data data, string region)
+        {
+            int i = -1;
+
+            List<Data> Locdata = readFromDB(region);
+            if (Locdata == null)
+                Locdata = new List<Data>();
+
+            i = data.ID;
+            foreach (Data item in Locdata)
+            {
+                if (item.Same(data))
+                {
+                    Locdata.Remove(item);
+                    break;
+                }
+            }
+            // Regulisemo indekse ispocetka
+            for(int j = 0; j < Locdata.Count; j++)
+            {
+                Locdata[j].ID = j + 1;
+            }
+            
+            updateDB(Locdata, region); // Need to update it in the central DB
+            ClientProxy.proxy.deleteData(data); //Brisanje u centralnoj bazi
+            
 
             return i;
         }

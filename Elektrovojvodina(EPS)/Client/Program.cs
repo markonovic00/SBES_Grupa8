@@ -67,7 +67,8 @@ namespace Client
                     Console.WriteLine("3. Get Year Average by city");
                     Console.WriteLine("4. Get Year Average by region");
                     Console.WriteLine("5. Update consumption this mounth");
-                    Console.WriteLine("6. Add Data");
+                    Console.WriteLine("6. Delete record");
+                    Console.WriteLine("7. Add Data");
                     Console.WriteLine("0. Exit");
                     code = Console.ReadLine();
                     switch (code)
@@ -149,8 +150,8 @@ namespace Client
                             double potrosnja = Convert.ToDouble(Console.ReadLine());
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
-                                Data data = proxy.updateConsumption(item.Value, gradu, potrosnja);
-                                Console.WriteLine("Azurirana vrednost: {0}",data.ToString());
+                                Data dataup = proxy.updateConsumption(item.Value, gradu, potrosnja);
+                                Console.WriteLine("Azurirana vrednost: {0}", dataup.ToString());
                             }
                             else
                             {
@@ -160,16 +161,37 @@ namespace Client
                             }
                             break;
                         case "6":
+                            List<Data> datadel = proxy.getData(item.Value);
+                            foreach (Data dt in datadel)
+                            {
+                                Console.WriteLine("\t"+dt.ToString());
+                            }
+                            Console.Write("\t Izaberite: ");
+                            int index = Convert.ToInt32(Console.ReadLine().Trim());
+                            Data delData = datadel[index - 1];
+                            Console.WriteLine("Uspesno obrisano na indeksu: " + proxy.deleteData(delData, item.Value));
+                            break;
+                        case "7":
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
                                 Data dt = new Data
                                 {
-                                    ID = 1,
+                                    ID = 0,
                                     Region = item.Value,
-                                    Grad = "GradNeki",
-                                    Godina = DateTime.Now.Year.ToString(),
-                                    MesecnaPotrosnja = new List<double> { 1, 2, 1, 3, 4 }
+                                    Grad = "",
+                                    Godina = "",
+                                    MesecnaPotrosnja = new List<double>()
                                 };
+                                Console.Write("\tUnesite grad: ");
+                                dt.Grad = Console.ReadLine().Trim();
+                                Console.Write("\tUnesite godinu: ");
+                                dt.Godina = Console.ReadLine().Trim();
+                                Console.WriteLine("\tUnesite mesecnje potrosnje: ");
+                                for (int i = 0; i < 12; i++)
+                                {
+                                    Console.Write("\t  {0}. Mesec: ",i+1);
+                                    dt.MesecnaPotrosnja.Add(Convert.ToDouble(Console.ReadLine().Trim()));
+                                }
                                 Console.WriteLine(proxy.writeData(dt,item.Value));
                             }
                             else
