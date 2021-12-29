@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Security.Cryptography;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.Text;
@@ -56,6 +57,22 @@ namespace Client
 
             EndpointAddress endpointAddress = new EndpointAddress(new Uri(address),
                 EndpointIdentity.CreateUpnIdentity("localServer"));
+
+            #region AES
+
+            var key = localSettings.Key; // Postavljanje kljuca koji se nalazi u lokalnim podesavanjima
+
+            // Potrebno izmaniti sve fukncije da rade sa nizom bajtova
+
+            byte[] enc = Security.EncryptStringToBytes_Aes("PorukaTest", key);
+
+            string roundtrip = Security.DecryptStringFromBytes_Aes(enc, key);
+
+            Console.WriteLine("Original: {0}","PorukaTest");
+            Console.WriteLine("Encrypted (b64-encode): {0}",Convert.ToBase64String(enc));
+            Console.WriteLine("Round Trip: {0}",roundtrip);
+
+            #endregion AES
 
             using (ClientProxy proxy = new ClientProxy(binding, endpointAddress))
             {

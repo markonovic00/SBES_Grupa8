@@ -9,6 +9,7 @@ namespace ServiceContracts
     public class LocalSettings
     {
         public Dictionary<int, string> Ports { get; }
+        public Byte[] Key { get; }
 
         public LocalSettings()
         {
@@ -20,7 +21,10 @@ namespace ServiceContracts
             Ports.Add(9004, "SrednjiBanat");
             Ports.Add(9005, "JuzniBanat");
             Ports.Add(9006, "Srem");
+
+            Key = new byte[]{ 250,226,86,77,136,181,153,166,128,49,63,181,232,214,110,91 };
         }
+
 
     }
 }

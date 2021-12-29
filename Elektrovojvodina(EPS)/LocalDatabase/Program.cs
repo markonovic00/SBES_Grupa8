@@ -10,6 +10,7 @@ using System.Net.NetworkInformation;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Security.Cryptography;
 
 namespace LocalDatabase
 {
@@ -85,7 +86,7 @@ namespace LocalDatabase
             //ClientProxy proxy = new ClientProxy(centralBinding, endpointAddress);
 
             ClientProxy.proxy = new ClientProxy(centralBinding, endpointAddress);
-
+            
             Console.WriteLine("Uspedno azurirano {0} vrednosti.",ClientProxy.proxy.updateRecords(Local.readFromDB(item.Value))); //Povuce podatke iz lokalnog txt i posalje centralnoj da proveri sinhronizaciju
 
             #endregion
