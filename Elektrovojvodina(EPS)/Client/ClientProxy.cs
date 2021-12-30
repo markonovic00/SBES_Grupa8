@@ -23,7 +23,7 @@ namespace Client
             //Credentials.Windows.AllowNtlm = false;
         }
 
-        public int deleteData(Data data, string region)
+        public byte[] deleteData(byte[] data, byte[] region)
         {
             try
             {
@@ -32,24 +32,24 @@ namespace Client
             catch (Exception e)
             {
                 Console.WriteLine("Error: {0}", e.Message);
-                return -1;
+                return new byte[] { 0 };
             }
         }
 
-        public double getAverageByCity(string region, string city, string godina)
+        public byte[] getAverageByCity(byte[] _region, byte[] _city, byte[] _year)
         {
             try
             {
-                return factory.getAverageByCity(region,city, godina);
+                return factory.getAverageByCity(_region,_city, _year);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error: {0}", e.Message);
-                return -1;
+                return new byte[] {0};
             }
         }
 
-        public double getAverageByRegion(string region, string godina)
+        public byte[] getAverageByRegion(byte[] region, byte[] godina)
         {
             try
             {
@@ -58,33 +58,33 @@ namespace Client
             catch (Exception e)
             {
                 Console.WriteLine("Error: {0}", e.Message);
-                return -1;
+                return new byte[] { 0 };
             }
         }
 
-        public List<Data> getData(string region)
+        public byte[] getData(byte[] _region)
         {
             try
             {
-                return factory.getData(region);
+                return factory.getData(_region);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error: {0}", e.Message);
-                return new List<Data>() { new Data { ID = 0, Region = "", Grad = "", Godina = "", MesecnaPotrosnja = new List<double>() { 0, } } };
+                return new byte[] {0};
             }
         }
 
-        public List<Data> getDataByCity(string region, string city)
+        public byte[] getDataByCity(byte[] _region, byte[] _city)
         {
             try
             {
-                return factory.getDataByCity(region,city);
+                return factory.getDataByCity(_region,_city);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error: {0}", e.Message);
-                return new List<Data>() { new Data { ID = 0, Region = "", Grad = "", Godina = "", MesecnaPotrosnja = new List<double>() { 0, } } };
+                return new byte[] { 0 };
             }
         }
 
@@ -101,7 +101,7 @@ namespace Client
             }
         }
 
-        public Data updateConsumption(string region, string city, double value)
+        public byte[] updateConsumption(byte[] region, byte[] city, byte[] value)
         {
             try
             {
@@ -110,11 +110,11 @@ namespace Client
             catch (Exception e)
             {
                 Console.WriteLine("Error: {0}", e.Message);
-                return new Data { ID = 0, Region = "", Grad = "", Godina = "", MesecnaPotrosnja = new List<double>() { 0, } };
+                return new byte[] { 0 };
             }
         }
 
-        public string writeData(Data data,string region)
+        public byte[] writeData(byte[] data,byte[] region)
         {
             try
             {
@@ -123,7 +123,7 @@ namespace Client
             catch (Exception e)
             {
                 
-                return  e.Message ;
+                return new byte[] { 0 };
             }
         }
     }

@@ -14,24 +14,24 @@ namespace ServiceContracts
         int Ping();
 
         [OperationContract]
-        List<Data> getData(string region);
+        byte[] getData(byte[] _region);
 
         [OperationContract]
-        List<Data> getDataByCity(string region, string city);
+        byte[] getDataByCity(byte[] _region, byte[] _city);
 
         [OperationContract]
-        double getAverageByCity(string region, string city, string godina);
+        byte[] getAverageByCity(byte[] _region, byte[] _city, byte[] _year);
 
         [OperationContract]
-        double getAverageByRegion(string region, string godina);
+        byte[] getAverageByRegion(byte[] _region, byte[] _year);
 
         [OperationContract]
-        Data updateConsumption(string region, string city, double value);
+        byte[] updateConsumption(byte[] _region, byte[] _city, byte[] _value);
 
         [OperationContract]
-        string writeData(Data data, string region);
+        byte[] writeData(byte[] _data, byte[] _region);
 
         [OperationContract]
-        int deleteData(Data data, string region);
+        byte[] deleteData(byte[] _data, byte[] _region);
     }
 }

@@ -93,10 +93,12 @@ namespace Client
                         case "1":
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
-                                List<Data> data = proxy.getData(item.Value);
-                                foreach (Data dt in data)
+                                byte[] encMess = proxy.getData(Security.EncryptStringToBytes_Aes(item.Value, key));
+                                string plainMess = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                string[] data = plainMess.Split('|');
+                                foreach (var dt in data)
                                 {
-                                    Console.WriteLine(dt.ToString());
+                                    Console.WriteLine(dt);
                                 }
                                 
                             }
@@ -112,10 +114,12 @@ namespace Client
                             string grad = Console.ReadLine();
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
-                                List<Data> data = proxy.getDataByCity(item.Value,grad.ToLower().Trim());
-                                foreach (Data dt in data)
+                                byte[] encMess = proxy.getDataByCity(Security.EncryptStringToBytes_Aes(item.Value, key),Security.EncryptStringToBytes_Aes(grad.ToLower().Trim(),key));
+                                string plainMess = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                string[] data = plainMess.Split('|');
+                                foreach (var dt in data)
                                 {
-                                    Console.WriteLine(dt.ToString());
+                                    Console.WriteLine(dt);
                                 }
 
                             }
@@ -133,7 +137,11 @@ namespace Client
                             string godinac = Console.ReadLine();
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
-                                double data = proxy.getAverageByCity(item.Value,avg.ToLower().Trim(),godinac.ToLower().Trim());
+                                byte[] encMess = proxy.getAverageByCity(
+                                    Security.EncryptStringToBytes_Aes(item.Value,key)
+                                    ,Security.EncryptStringToBytes_Aes(avg.ToLower().Trim(),key)
+                                    ,Security.EncryptStringToBytes_Aes(godinac.ToLower().Trim(),key));
+                                string data = Security.DecryptStringFromBytes_Aes(encMess, key);
                                 Console.WriteLine("Potrosnja godine: {0} \n Grad: {1} \n Potrosnja: {2}",godinac,avg,data);
                             }
                             else
@@ -150,7 +158,10 @@ namespace Client
                             string godinar = Console.ReadLine();
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
-                                double data = proxy.getAverageByRegion(avr.ToLower().Trim(), godinar.ToLower().Trim());
+                                byte[] encMess = proxy.getAverageByRegion(
+                                    Security.EncryptStringToBytes_Aes(avr.ToLower().Trim(),key)
+                                    ,Security.EncryptStringToBytes_Aes(godinar.ToLower().Trim(),key));
+                                string data = Security.DecryptStringFromBytes_Aes(encMess, key);
                                 Console.WriteLine("Potrosnja godine: {0} \n Grad: {1} \n Potrosnja: {2}", godinar, avr, data);
                             }
                             else
@@ -167,8 +178,12 @@ namespace Client
                             double potrosnja = Convert.ToDouble(Console.ReadLine());
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
-                                Data dataup = proxy.updateConsumption(item.Value, gradu, potrosnja);
-                                Console.WriteLine("Azurirana vrednost: {0}", dataup.ToString());
+                                byte[] encMess = proxy.updateConsumption(
+                                    Security.EncryptStringToBytes_Aes(item.Value,key),
+                                    Security.EncryptStringToBytes_Aes(gradu,key),
+                                    Security.EncryptStringToBytes_Aes(potrosnja.ToString(),key));
+                                string dataup = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                Console.WriteLine("Azurirana vrednost: {0}", dataup);
                             }
                             else
                             {
@@ -178,15 +193,29 @@ namespace Client
                             }
                             break;
                         case "6":
-                            List<Data> datadel = proxy.getData(item.Value);
-                            foreach (Data dt in datadel)
+                            if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
-                                Console.WriteLine("\t"+dt.ToString());
+                                byte[] encMess = proxy.getData(Security.EncryptStringToBytes_Aes(item.Value, key));
+                                string plainMess = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                string[] data = plainMess.Split('|');
+                                foreach (var dt in data)
+                                {
+                                    Console.WriteLine(dt);
+                                }
+                                Console.Write("\t Izaberite: ");
+                                int index = Convert.ToInt32(Console.ReadLine().Trim());
+                                string delData = data[index - 1];
+                                byte[] encInd = proxy.deleteData(Security.EncryptStringToBytes_Aes(delData,key),
+                                    Security.EncryptStringToBytes_Aes(item.Value,key));
+                                string redInd = Security.DecryptStringFromBytes_Aes(encInd, key);
+                                Console.WriteLine("Uspesno obrisano na indeksu: " + redInd);
                             }
-                            Console.Write("\t Izaberite: ");
-                            int index = Convert.ToInt32(Console.ReadLine().Trim());
-                            Data delData = datadel[index - 1];
-                            Console.WriteLine("Uspesno obrisano na indeksu: " + proxy.deleteData(delData, item.Value));
+                            else
+                            {
+                                Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                Console.ReadKey();
+                                Environment.Exit(0);
+                            }
                             break;
                         case "7":
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
@@ -209,7 +238,10 @@ namespace Client
                                     Console.Write("\t  {0}. Mesec: ",i+1);
                                     dt.MesecnaPotrosnja.Add(Convert.ToDouble(Console.ReadLine().Trim()));
                                 }
-                                Console.WriteLine(proxy.writeData(dt,item.Value));
+                                byte[] encMess = proxy.writeData(Security.EncryptStringToBytes_Aes(dt.ToString(),key), 
+                                    Security.EncryptStringToBytes_Aes(item.Value,key));
+                                string retMess = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                Console.WriteLine(retMess);
                             }
                             else
                             {

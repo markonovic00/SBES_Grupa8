@@ -14,9 +14,10 @@ namespace LocalDatabase
     public class Local : ILocal
     {
         public static List<Data> localData = new List<Data>();
-
+        public static LocalSettings localSettings = new LocalSettings();
         public static List<Data> readFromDB(string region)
         {
+            
             List<Data> retData = new List<Data>();
             if (File.Exists(region + ".txt"))
             {
@@ -58,11 +59,19 @@ namespace LocalDatabase
             }
         }
 
-        public List<Data> getData(string region)
+        public byte[] getData(byte[] _region)
         {
+            string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
             List<Data> list = readFromDB(region);
+            string plainTxt = string.Empty;
+            foreach (Data item in list)
+            {
+                plainTxt += item.ToString() + "|";
+            }
+            plainTxt = plainTxt.Remove(plainTxt.Length - 1);
+            byte[] enc = Security.EncryptStringToBytes_Aes(plainTxt, localSettings.Key);
             Console.WriteLine("Client request data");
-            return list;
+            return enc;
         }
 
         public int Ping()
@@ -71,9 +80,10 @@ namespace LocalDatabase
             return 1;
         }
 
-        public string writeData(Data data,string region)
+        public byte[] writeData(byte[] _data, byte[] _region)
         {
-            
+            string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
+            Data data = Data.DataFromString(Security.DecryptStringFromBytes_Aes(_data, localSettings.Key));
             try
             {
                 ClientProxy.proxy.Ping(); // Pinguje centralni server radi provere samo 
@@ -101,34 +111,40 @@ namespace LocalDatabase
                     ClientProxy.proxy.writeCentral(data); //radi upisivanje novog u centralnu
                 }
                 
-                return "OK";
+                return Security.EncryptStringToBytes_Aes("Uspesno upisano",localSettings.Key);
             }
             catch (Exception ex)
             {
-                return ex.Message.ToString();
+                return Security.EncryptStringToBytes_Aes(ex.Message.ToString(),localSettings.Key);
             }
 
         }
 
-        public List<Data> getDataByCity(string region, string city)
+        public byte[] getDataByCity(byte[] _region, byte[] _city)
         {
+            string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
+            string city = Security.DecryptStringFromBytes_Aes(_city, localSettings.Key);
             List<Data> list = readFromDB(region);
-            List<Data> filter = new List<Data>();
+            string messRet = string.Empty;
             if (list != null)
             {
                 foreach (Data item in list)
                 {
                     if (item.Grad.ToLower().Equals(city))
-                        filter.Add(item);
+                        messRet += item.ToString() + "|";
                 }
             }
-
+            messRet = messRet.Remove(messRet.Length - 1);
+            byte[] enc = Security.EncryptStringToBytes_Aes(messRet, localSettings.Key);
             Console.WriteLine("Client request data");
-            return filter;
+            return enc;
         }
 
-        public double getAverageByCity(string region,string city, string godina)
+        public byte[] getAverageByCity(byte[] _region, byte[] _city, byte[] _year)
         {
+            string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
+            string city = Security.DecryptStringFromBytes_Aes(_city, localSettings.Key);
+            string godina = Security.DecryptStringFromBytes_Aes(_year, localSettings.Key);
             List<Data> data = readFromDB(region);
             if (data == null)
                 data = new List<Data>();
@@ -146,11 +162,15 @@ namespace LocalDatabase
             }
             average = average / counter;
 
-            return average;
+            byte[] encMess = Security.EncryptStringToBytes_Aes(average.ToString(), localSettings.Key);
+
+            return encMess;
         }
 
-        public double getAverageByRegion(string region, string godina)
+        public byte[] getAverageByRegion(byte[] _region, byte[] _year)
         {
+            string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
+            string godina = Security.DecryptStringFromBytes_Aes(_year, localSettings.Key);
             List<Data> data = readFromDB(region);
             if (data == null)
                 data = new List<Data>();
@@ -168,11 +188,17 @@ namespace LocalDatabase
             }
             average = average / counter;
 
-            return average;
+            byte[] encMess = Security.EncryptStringToBytes_Aes(average.ToString(), localSettings.Key);
+
+            return encMess;
         }
 
-        public Data updateConsumption(string region, string city, double value)
+        public byte[] updateConsumption(byte[] _region, byte[] _city, byte[] _value)
         {
+            string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
+            string city = Security.DecryptStringFromBytes_Aes(_city, localSettings.Key);
+            double value = Convert.ToDouble(Security.DecryptStringFromBytes_Aes(_value, localSettings.Key));
+
             Data i = new Data() {ID=0,Grad="",Region="",Godina="",MesecnaPotrosnja=new List<double>() { 0 } };
             int currentMounth = DateTime.Now.Month;
 
@@ -197,12 +223,15 @@ namespace LocalDatabase
                 ClientProxy.proxy.updateConsumpion(region, city, value); // Update Central DB
             }
 
-            return i;
+            return Security.EncryptStringToBytes_Aes(i.ToString(),localSettings.Key);
         }
 
-        public int deleteData(Data data, string region)
+        public byte[] deleteData(byte[] _data, byte[] _region)
         {
             int i = -1;
+
+            string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
+            Data data = Data.DataFromString(Security.DecryptStringFromBytes_Aes(_data, localSettings.Key));
 
             List<Data> Locdata = readFromDB(region);
             if (Locdata == null)
@@ -227,7 +256,7 @@ namespace LocalDatabase
             ClientProxy.proxy.deleteData(data); //Brisanje u centralnoj bazi
             
 
-            return i;
+            return Security.EncryptStringToBytes_Aes(i.ToString(),localSettings.Key);
         }
     }
 }
