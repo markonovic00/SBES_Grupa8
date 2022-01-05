@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
 using System.Security.Principal;
 using System.ServiceModel;
 using System.Text;
@@ -59,6 +60,7 @@ namespace LocalDatabase
             }
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "ReadSBES")]
         public byte[] getData(byte[] _region)
         {
             string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
@@ -74,12 +76,14 @@ namespace LocalDatabase
             return enc;
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "ReadSBES")]
         public int Ping()
         {
             Console.WriteLine("Client ping");
             return 1;
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "AdminSBES")]
         public byte[] writeData(byte[] _data, byte[] _region)
         {
             string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
@@ -120,6 +124,7 @@ namespace LocalDatabase
 
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "ReadSBES")]
         public byte[] getDataByCity(byte[] _region, byte[] _city)
         {
             string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
@@ -140,6 +145,7 @@ namespace LocalDatabase
             return enc;
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "CalculateSBES")]
         public byte[] getAverageByCity(byte[] _region, byte[] _city, byte[] _year)
         {
             string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
@@ -167,6 +173,7 @@ namespace LocalDatabase
             return encMess;
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "CalculateSBES")]
         public byte[] getAverageByRegion(byte[] _region, byte[] _year)
         {
             string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
@@ -193,6 +200,7 @@ namespace LocalDatabase
             return encMess;
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "ModifySBES")]
         public byte[] updateConsumption(byte[] _region, byte[] _city, byte[] _value)
         {
             string region = Security.DecryptStringFromBytes_Aes(_region, localSettings.Key);
@@ -226,6 +234,7 @@ namespace LocalDatabase
             return Security.EncryptStringToBytes_Aes(i.ToString(),localSettings.Key);
         }
 
+        [PrincipalPermission(SecurityAction.Demand, Role = "AdminSBES")]
         public byte[] deleteData(byte[] _data, byte[] _region)
         {
             int i = -1;

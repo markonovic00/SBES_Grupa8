@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,6 +53,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Manager\Manager.csproj">
+      <Project>{b169e6f6-4599-4259-90f6-b26672bcbdfb}</Project>
+      <Name>Manager</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceContracts\ServiceContracts.csproj">
       <Project>{9D056894-4472-43C2-87E6-BDE2D78944AE}</Project>
       <Name>ServiceContracts</Name>

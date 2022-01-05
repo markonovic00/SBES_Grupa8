@@ -104,9 +104,9 @@ namespace Client
                             }
                             else
                             {
-                                Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                //Console.WriteLine("Neuspesna konekcija sa servisom...");
                                 Console.ReadKey();
-                                Environment.Exit(0);
+                                //Environment.Exit(0);
                             }
                             break;
                         case "2":
@@ -125,9 +125,9 @@ namespace Client
                             }
                             else
                             {
-                                Console.WriteLine("Neuspesna konekcija sa servisom...");
-                                Console.ReadKey();
-                                Environment.Exit(0);
+                                //Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                //Console.ReadKey();
+                                //Environment.Exit(0);
                             }
                             break;
                         case "3":
@@ -146,9 +146,9 @@ namespace Client
                             }
                             else
                             {
-                                Console.WriteLine("Neuspesna konekcija sa servisom...");
-                                Console.ReadKey();
-                                Environment.Exit(0);
+                                //Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                //Console.ReadKey();
+                                //Environment.Exit(0);
                             }
                             break;
                         case "4":
@@ -166,9 +166,9 @@ namespace Client
                             }
                             else
                             {
-                                Console.WriteLine("Neuspesna konekcija sa servisom...");
-                                Console.ReadKey();
-                                Environment.Exit(0);
+                                //Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                //Console.ReadKey();
+                                //Environment.Exit(0);
                             }
                             break;
                         case "5":
@@ -187,9 +187,9 @@ namespace Client
                             }
                             else
                             {
-                                Console.WriteLine("Neuspesna konekcija sa servisom...");
-                                Console.ReadKey();
-                                Environment.Exit(0);
+                                //Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                //Console.ReadKey();
+                                //Environment.Exit(0);
                             }
                             break;
                         case "6":
@@ -212,9 +212,9 @@ namespace Client
                             }
                             else
                             {
-                                Console.WriteLine("Neuspesna konekcija sa servisom...");
-                                Console.ReadKey();
-                                Environment.Exit(0);
+                                //Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                //Console.ReadKey();
+                                //Environment.Exit(0);
                             }
                             break;
                         case "7":
@@ -245,9 +245,9 @@ namespace Client
                             }
                             else
                             {
-                                Console.WriteLine("Neuspesna konekcija sa servisom...");
-                                Console.ReadKey();
-                                Environment.Exit(0);
+                                //Console.WriteLine("Neuspesna konekcija sa servisom...");
+                                //Console.ReadKey();
+                                //Environment.Exit(0);
                             }
                             break;
                     }

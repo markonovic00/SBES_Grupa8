@@ -11,6 +11,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using Manager;
 
 namespace LocalDatabase
 {
@@ -65,23 +67,27 @@ namespace LocalDatabase
 
             host.Open();
 
-            Console.WriteLine("Korisnik koji je pokrenuo servera :" + WindowsIdentity.GetCurrent().Name);
+            Console.WriteLine("Korisnik koji je pokrenuo Lokalnogservera :" + WindowsIdentity.GetCurrent().Name);
 
             Console.WriteLine("Servis je pokrenut.");
 
             #region centralConnection
 
+            string srvCertName = "marko";
+
             NetTcpBinding centralBinding = new NetTcpBinding();
             string centralAddress = "net.tcp://localhost:9999/CentralService";
 
             centralBinding.Security.Mode = SecurityMode.Transport;
-            centralBinding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;
-            centralBinding.Security.Transport.ProtectionLevel = System.Net.Security.ProtectionLevel.EncryptAndSign;
+            centralBinding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+
+            X509Certificate2 servCert = 
+                CertManager.GetCertificateFromStorage(StoreName.TrustedPeople,StoreLocation.LocalMachine, srvCertName);
 
             Console.WriteLine("Korisnik koji je pokrenuo klijenta je : " + WindowsIdentity.GetCurrent().Name);
 
             EndpointAddress endpointAddress = new EndpointAddress(new Uri(centralAddress),
-                EndpointIdentity.CreateUpnIdentity("centralServer"));
+                new X509CertificateEndpointIdentity(servCert));
 
             //ClientProxy proxy = new ClientProxy(centralBinding, endpointAddress);
 

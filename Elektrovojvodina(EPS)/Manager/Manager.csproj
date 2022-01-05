@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{934D7130-FCE6-4781-8986-A3CB20AF950C}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>LocalDatabase</RootNamespace>
-    <AssemblyName>LocalDatabase</AssemblyName>
+    <ProjectGuid>{B169E6F6-4599-4259-90F6-B26672BCBDFB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Manager</RootNamespace>
+    <AssemblyName>Manager</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -35,7 +34,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,24 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientProxy.cs" />
-    <Compile Include="Local.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="CertManager.cs" />
+    <Compile Include="ClientCertValidator.cs" />
+    <Compile Include="Formatter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Manager\Manager.csproj">
-      <Project>{B169E6F6-4599-4259-90F6-B26672BCBDFB}</Project>
-      <Name>Manager</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ServiceContracts\ServiceContracts.csproj">
-      <Project>{9D056894-4472-43C2-87E6-BDE2D78944AE}</Project>
-      <Name>ServiceContracts</Name>
-    </ProjectReference>
+    <Compile Include="ServiceCertValidator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
