@@ -17,3 +17,5 @@ doda nove ili briše postojeće entitete iz baze podataka (Read, Administrate).
 Poruke koje se razmenjuju između LocalDatabase komponente i njenih klijenata treba da budu kripotvane AES algoritmom u CBC modu.
 
 Sve akcije nad centralnom bazom podataka koje podrazumevaju izmene podataka je potrebno logovati u custom kreirani Windows Event Log (na lokalnoj mašini), uključujući i proces sinhronizacije glavne baze podataka sa lokalnim kopijama (na mašini gde je podignuta glavna baza podataka).
+
+Sifre za sertifikate i naloge: 1234
