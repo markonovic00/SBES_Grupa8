@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Manager;
 using System.ServiceModel.Security;
+using System.ServiceModel.Description;
 
 namespace CentralDatabase
 {
@@ -38,6 +39,13 @@ namespace CentralDatabase
                 CertManager.GetCertificateFromStorage(System.Security.Cryptography.X509Certificates.StoreName.My,
                 System.Security.Cryptography.X509Certificates.StoreLocation.LocalMachine,
                 srvCertCN);
+
+            ServiceSecurityAuditBehavior newAudit = new ServiceSecurityAuditBehavior();
+            newAudit.AuditLogLocation = AuditLogLocation.Application;
+            newAudit.ServiceAuthorizationAuditLevel = AuditLevel.SuccessOrFailure;
+
+            host.Description.Behaviors.Remove<ServiceSecurityAuditBehavior>();
+            host.Description.Behaviors.Add(newAudit);
 
             host.Open();
 

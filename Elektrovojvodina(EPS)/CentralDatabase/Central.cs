@@ -8,6 +8,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Manager;
 
 namespace CentralDatabase
 {
@@ -123,6 +124,16 @@ namespace CentralDatabase
             sw.WriteLine(localData.ToString());
             sw.Close();
 
+            try
+            {
+                Audit.WriteCentral(localData.ToString());
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
             Console.WriteLine("Local database writing: "+ localData.ToString());
 
             return updatedRecords;
@@ -151,6 +162,16 @@ namespace CentralDatabase
 
             Console.WriteLine("Local database updated: "+dummy.ToString());
 
+            try
+            {
+                Audit.UpdateConsumptionCentral(dummy.ToString());
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
             return retId;
         }
 
@@ -167,8 +188,19 @@ namespace CentralDatabase
             {
                 if (item.Same(_data))
                 {
+                    try
+                    {
+                        Audit.DeleteCentral(item.ToString());
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
                     Console.WriteLine("Local database deleted: "+item.ToString());
                     data.Remove(item);
+
                     break;
                 }
             }
@@ -212,6 +244,15 @@ namespace CentralDatabase
 
             writeToDB(centralData);
 
+            try
+            {
+                Audit.UpdateAllCentral(updatedRecords.ToString());
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             return updatedRecords;
         }
