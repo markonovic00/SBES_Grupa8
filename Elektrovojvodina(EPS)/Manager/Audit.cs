@@ -42,7 +42,7 @@ namespace Manager
                     AuditEvents.WriteCentral;
                 string message = String.Format(WriteCentral,
 					dataWritten);
-                customLog.WriteEntry(message);
+                customLog.WriteEntry(message,EventLogEntryType.Information);
             }
             else
 			{

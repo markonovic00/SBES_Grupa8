@@ -94,7 +94,9 @@ namespace Client
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
                                 byte[] encMess = proxy.getData(Security.EncryptStringToBytes_Aes(item.Value, key));
-                                string plainMess = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                string plainMess = "";
+                                if (encMess.Length > 16)
+                                    plainMess = Security.DecryptStringFromBytes_Aes(encMess, key);
                                 string[] data = plainMess.Split('|');
                                 foreach (var dt in data)
                                 {
@@ -115,7 +117,9 @@ namespace Client
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
                                 byte[] encMess = proxy.getDataByCity(Security.EncryptStringToBytes_Aes(item.Value, key),Security.EncryptStringToBytes_Aes(grad.ToLower().Trim(),key));
-                                string plainMess = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                string plainMess = "";
+                                if (encMess.Length>16)
+                                    plainMess = Security.DecryptStringFromBytes_Aes(encMess, key);
                                 string[] data = plainMess.Split('|');
                                 foreach (var dt in data)
                                 {
@@ -141,7 +145,9 @@ namespace Client
                                     Security.EncryptStringToBytes_Aes(item.Value,key)
                                     ,Security.EncryptStringToBytes_Aes(avg.ToLower().Trim(),key)
                                     ,Security.EncryptStringToBytes_Aes(godinac.ToLower().Trim(),key));
-                                string data = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                string data = "";
+                                if (encMess.Length >16)
+                                    data = Security.DecryptStringFromBytes_Aes(encMess, key);
                                 Console.WriteLine("Potrosnja godine: {0} \n Grad: {1} \n Potrosnja: {2}",godinac,avg,data);
                             }
                             else
@@ -161,7 +167,9 @@ namespace Client
                                 byte[] encMess = proxy.getAverageByRegion(
                                     Security.EncryptStringToBytes_Aes(avr.ToLower().Trim(),key)
                                     ,Security.EncryptStringToBytes_Aes(godinar.ToLower().Trim(),key));
-                                string data = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                string data = "";
+                                if (encMess.Length > 16)
+                                    data = Security.DecryptStringFromBytes_Aes(encMess, key);
                                 Console.WriteLine("Potrosnja godine: {0} \n Grad: {1} \n Potrosnja: {2}", godinar, avr, data);
                             }
                             else
@@ -182,8 +190,10 @@ namespace Client
                                     Security.EncryptStringToBytes_Aes(item.Value,key),
                                     Security.EncryptStringToBytes_Aes(gradu,key),
                                     Security.EncryptStringToBytes_Aes(potrosnja.ToString(),key));
-                                string dataup = Security.DecryptStringFromBytes_Aes(encMess, key);
-                                Console.WriteLine("Azurirana vrednost: {0}", dataup);
+                                string data = "";
+                                if (encMess.Length > 16)
+                                    data = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                Console.WriteLine("Azurirana vrednost: {0}", data);
                             }
                             else
                             {
@@ -196,7 +206,9 @@ namespace Client
                             if (proxy.Ping() == 1) //Prilikom svakog poziva metode izvrsiti ping
                             {
                                 byte[] encMess = proxy.getData(Security.EncryptStringToBytes_Aes(item.Value, key));
-                                string plainMess = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                string plainMess = "";
+                                if (encMess.Length>16)
+                                     plainMess = Security.DecryptStringFromBytes_Aes(encMess, key);
                                 string[] data = plainMess.Split('|');
                                 foreach (var dt in data)
                                 {
@@ -207,7 +219,9 @@ namespace Client
                                 string delData = data[index - 1];
                                 byte[] encInd = proxy.deleteData(Security.EncryptStringToBytes_Aes(delData,key),
                                     Security.EncryptStringToBytes_Aes(item.Value,key));
-                                string redInd = Security.DecryptStringFromBytes_Aes(encInd, key);
+                                string redInd = "";
+                                if (encInd.Length>16)
+                                    redInd = Security.DecryptStringFromBytes_Aes(encInd, key);
                                 Console.WriteLine("Uspesno obrisano na indeksu: " + redInd);
                             }
                             else
@@ -240,7 +254,9 @@ namespace Client
                                 }
                                 byte[] encMess = proxy.writeData(Security.EncryptStringToBytes_Aes(dt.ToString(),key), 
                                     Security.EncryptStringToBytes_Aes(item.Value,key));
-                                string retMess = Security.DecryptStringFromBytes_Aes(encMess, key);
+                                string retMess = "";
+                                if (encMess.Length>16)
+                                    retMess = Security.DecryptStringFromBytes_Aes(encMess, key);
                                 Console.WriteLine(retMess);
                             }
                             else

@@ -166,7 +166,14 @@ namespace LocalDatabase
                     counter = item.MesecnaPotrosnja.Count;
                 }
             }
-            average = average / counter;
+            try
+            {
+                average = average / counter;
+            }
+            catch(Exception ex)
+            {
+                average = 0;
+            }
 
             byte[] encMess = Security.EncryptStringToBytes_Aes(average.ToString(), localSettings.Key);
 
@@ -193,7 +200,14 @@ namespace LocalDatabase
                     counter += item.MesecnaPotrosnja.Count;
                 }
             }
-            average = average / counter;
+            try
+            {
+                average = average / counter;
+            }
+            catch (Exception ex)
+            {
+                average = 0;
+            }
 
             byte[] encMess = Security.EncryptStringToBytes_Aes(average.ToString(), localSettings.Key);
 

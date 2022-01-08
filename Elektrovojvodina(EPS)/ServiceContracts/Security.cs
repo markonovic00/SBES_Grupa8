@@ -64,6 +64,7 @@ namespace ServiceContracts
                 aesAlg.Key = Key;
 
                 byte[] IV = new byte[aesAlg.BlockSize / 8];
+
                 byte[] cipherText = new byte[cipherTextCombined.Length - IV.Length];
 
                 Array.Copy(cipherTextCombined, IV, IV.Length);
